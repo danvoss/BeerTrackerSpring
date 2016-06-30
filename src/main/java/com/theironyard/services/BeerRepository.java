@@ -18,7 +18,15 @@ public interface BeerRepository extends CrudRepository<Beer, Integer> {
     int countByType(String type);
     Iterable<Beer> findByTypeOrderByNameAsc(String type);
 
-    @Query("SELECT b FROM Beer b WHERE b.name LIKE ?1%")
+//      search by first letter only:
+//    @Query("SELECT b FROM Beer b WHERE b.name LIKE ?1%")
+//    Iterable<Beer> searchByName(String name);
+
+
+    @Query("SELECT b FROM Beer b WHERE LOWER(name) LIKE '%' || LOWER(?) || '%'")
     Iterable<Beer> searchByName(String name);
+
+    // above: || = string concatenation; "lower" on column & search makes case-insensitive
+
 }
 
